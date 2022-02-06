@@ -107,7 +107,7 @@ trie* rem(trie* root, string key, int depth) {
 
         if(!root) return NULL;
 
-        if(key.size() == depth) {
+        if((int)key.size() == depth) {
 
                     root->isLeaf = false;
                     root->meaning = "";
@@ -128,6 +128,72 @@ trie* rem(trie* root, string key, int depth) {
         }
 
         return root;
+
+
+}
+
+void autocomplete(trie* root, string s) {
+
+        if(!root) {
+                cout << "Not Found" << endl;
+                return;
+        }
+
+        trie* temp = root;
+
+        int si = s.size();
+
+        for(int i = 0; i < si; i++) {
+                if(temp->A[s[i] - 'a']) {
+                        temp = temp->A[s[i] - 'a'];
+                } else {
+                        cout << "Not Found" << endl;
+                        return;
+                }
+        }
+
+        if(temp->isLeaf) {
+                cout << s << endl;
+                return;
+        } else {
+
+                queue<pair<trie*, string> > q;
+
+                q.push({temp, s});
+
+                while(!q.empty()) {
+
+                        int now_si = q.size();
+                        bool flag = false;
+
+                        while(now_si--) {
+
+                                auto it = q.front();
+                                q.pop();
+                                if(it.first->isLeaf) {flag = true;
+                                            cout <<  it.second << endl;
+                                }
+
+                                for(int i = 0; i < 26; i++) {
+                                        if(it.first->A[i]) {
+                                                q.push({it.first->A[i], it.second + char(i + 97)});
+                                        }
+                                }
+
+
+
+                        }
+
+                        if(flag) {
+                                return;
+                        }
+
+
+                }
+
+
+        }
+
 
 
 }
@@ -155,6 +221,10 @@ int main()
         ins("anguish", "extreme suffering, grief, or pain");
         ins("abandon", "to leave and never return to (someone who needs protection or help)");
         ins("address", "to write on an envelope, package, letter, etc., the name and address of the person or business it is being sent to");
+        ins("transmit", "to send (information, sound, etc.) in the form of electrical signals to a radio, television, computer, etc.");
+        ins("transaction", "an occurrence in which goods, services, or money are passed from one person, account, etc., to another");
+        ins("translation", "words that have been changed from one language into a different language : words that have been translated");
+        ins("transfer", "to move (someone or something) from one place to another");
 
 
         string word, meaning;
@@ -171,8 +241,11 @@ int main()
 		cout << "1. Insert "<< endl;
 		cout <<"2. Search " << endl;
 		cout << "3. Remove " << endl;
+		cout << "4. Autocomplete " << endl;
+
 		cout <<"Enter your choice" << endl;
 		cin >> choice;
+
 		if(choice == 1) {
 
                     cout << "Enter word:  "<< endl;
@@ -215,10 +288,22 @@ int main()
                     cin >> word;
                     rem(root, word, 0);
 
+
                      cout << "\n Enter y to continue or n to exit" << endl;
                     cin >> now;
                     cout << endl;
 
+
+            } else if (choice == 4) {
+
+
+                    cout << "Enter word to autocomplete" << endl;
+                    cin >> word;
+                    autocomplete(root, word);
+
+                     cout << "\n Enter y to continue or n to exit" << endl;
+                    cin >> now;
+                    cout << endl;
 
             }
 
