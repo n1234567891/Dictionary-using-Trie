@@ -2,6 +2,8 @@
 
 This C++ program implements a dictionary using the **'trie'** data structure. Users can perform operations like searching the meaning of the word, inserting word-meaning pairs in the dictionary and can also remove words from the dictionary.
 
+Autocomplete feature is also available.
+
 References  - [learnersdictionary.com](https://learnersdictionary.com/) for word and their meanings.
 
 ### Here are some screenshots :
